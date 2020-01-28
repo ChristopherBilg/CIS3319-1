@@ -54,7 +54,7 @@ def startTCPEncryptedChat(host, port, DES_key, clientserver):
             message = input("Message to send: ").strip("\r\n")
             # TODO: print(plaintext)
             # TODO: encrypt with DES_key
-            # TOdO: print(ciphertext)
+            # TODO: print(ciphertext)
             socket_.send(bytearray(message, "utf-8"))
 
     # "Server" side
