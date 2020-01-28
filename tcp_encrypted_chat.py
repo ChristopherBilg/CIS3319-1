@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import pyDes as pydes
 import socket
 import sys
 
@@ -46,16 +47,22 @@ def startTCPEncryptedChat(host, port, DES_key, clientserver):
         while True:
             print("Waiting to receive message..")
             received = socket_.recv(CONNECTION_BUFFER_SIZE)
-            received = received.decode("utf-8").strip("\r\n")
-            # TODO: print(ciphertext)
-            # TODO: decrypt with DES_key
-            # TODO: print(plaintext)
+
+            print("Ciphertext: " + repr(received))
+            key = pydes.des("DESCRYPT", pydes.CBC, DES_key,
+                            pad=None, padmode=pydes.PAD_PKCS5)
+            received = key.decrypt(received, padmode=pydes.PAD_PKCS5)
+            print("Plaintext: " + received.decode("utf-8"))
 
             message = input("Message to send: ").strip("\r\n")
-            # TODO: print(plaintext)
-            # TODO: encrypt with DES_key
-            # TODO: print(ciphertext)
-            socket_.send(bytearray(message, "utf-8"))
+
+            print("Plaintext: " + message)
+            key = pydes.des("DESCRYPT", pydes.CBC, DES_key,
+                            pad=None, padmode=pydes.PAD_PKCS5)
+            message = key.encrypt(message)
+            print("Ciphertext: " + repr(message))
+
+            socket_.send(message)
 
     # "Server" side
     else:
@@ -65,17 +72,23 @@ def startTCPEncryptedChat(host, port, DES_key, clientserver):
 
         while True:
             message = input("Message to send: ").strip("\r\n")
-            # TODO: print(plaintext)
-            # TODO: encrypt with DES_key
-            # TODO: print(ciphertext)
-            connection.send(bytearray(message, "utf-8"))
+
+            print("Plaintext: " + message)
+            key = pydes.des("DESCRYPT", pydes.CBC, DES_key,
+                            pad=None, padmode=pydes.PAD_PKCS5)
+            message = key.encrypt(message)
+            print("Ciphertext: " + repr(message))
+
+            connection.send(message)
 
             print("Waiting to receive message..")
             received = connection.recv(CONNECTION_BUFFER_SIZE)
-            received = received.decode("utf-8").strip("\r\n")
-            # TODO: print(ciphertext)
-            # TODO: decrypt with DES_key
-            # TODO: print(plaintext)
+
+            print("Ciphertext: " + repr(received))
+            key = pydes.des("DESCRYPT", pydes.CBC, DES_key,
+                            pad=None, padmode=pydes.PAD_PKCS5)
+            received = key.decrypt(received, padmode=pydes.PAD_PKCS5)
+            print("Plaintext: " + received.decode("utf-8"))
 
     return
 
