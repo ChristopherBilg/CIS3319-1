@@ -14,7 +14,7 @@ def parseArguments():
               + sys.argv[0]
               + " <host_name_to_chat_with>"
               + " <port_to_chat_on>"
-              + " <file_to_read_DES_key_from"
+              + " <file_to_read_DES_key_from>"
               + " <client | server>")
         return None
 
